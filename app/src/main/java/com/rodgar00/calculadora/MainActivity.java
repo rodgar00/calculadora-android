@@ -3,7 +3,7 @@ package com.rodgar00.calculadora;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,8 +19,8 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private EditText textResultado;
     private boolean esNuevoNumero = true;
+    private TextView textResultado;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,12 +28,13 @@ public class MainActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
 
+        textResultado = findViewById(R.id.textResultado);
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        textResultado = findViewById(R.id.textResultado);
 
         List<Button> botonesNumericos = new ArrayList<>(Arrays.asList(
                 findViewById(R.id.button0),
@@ -117,13 +118,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void mostrarNumero(String numero) {
+        String textoActual = textResultado.getText().toString();
+
         if (esNuevoNumero) {
             textResultado.setText(numero);
             esNuevoNumero = false;
         } else {
-            textResultado.append(numero);
+            textResultado.setText(textoActual + numero);
         }
-        textResultado.setSelection(textResultado.getText().length());
     }
 
     private void equal() {
@@ -146,14 +148,13 @@ public class MainActivity extends AppCompatActivity {
                 textResultado.setText(String.valueOf(resultado));
             }
         }
-        textResultado.setSelection(textResultado.getText().length());
+
         esNuevoNumero = true;
     }
 
     private void clear() {
         textResultado.setText("0");
         esNuevoNumero = true;
-        textResultado.setSelection(textResultado.getText().length());
     }
 
     private void borrar() {
@@ -166,7 +167,6 @@ public class MainActivity extends AppCompatActivity {
             textoActual = "0";
         }
         textResultado.setText(textoActual);
-        textResultado.setSelection(textoActual.length());
     }
 
     private void toggleSign() {
@@ -178,7 +178,6 @@ public class MainActivity extends AppCompatActivity {
                 texto = "-" + texto;
             }
             textResultado.setText(texto);
-            textResultado.setSelection(texto.length());
         }
     }
 }

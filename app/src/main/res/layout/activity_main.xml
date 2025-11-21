@@ -178,7 +178,7 @@
 
     </TableLayout>
 
-    <EditText
+    <TextView
         android:id="@+id/textResultado"
         android:layout_width="match_parent"
         android:layout_height="300dp"
@@ -192,7 +192,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-    </EditText>
+    </TextView>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
