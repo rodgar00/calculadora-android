@@ -181,7 +181,7 @@
     <TextView
         android:id="@+id/textResultado"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="200dp"
         android:padding="20dp"
         android:text="0"
         android:textColor="#FFFFFF"

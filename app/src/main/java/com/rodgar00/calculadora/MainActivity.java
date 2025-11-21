@@ -190,7 +190,7 @@ public class MainActivity extends AppCompatActivity {
         String inicio = texto.substring(0, i + 1);
         String ultimo = texto.substring(i + 1);
 
-        if (ultimo.startsWith("-") || inicio.endsWith("-")) {
+        if (ultimo.startsWith("-")) {
             return;
         }
 
