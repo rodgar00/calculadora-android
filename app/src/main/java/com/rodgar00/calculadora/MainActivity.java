@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,9 +19,11 @@ import java.util.Arrays;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
+    ArrayList<String> operadores = new ArrayList<>(Arrays.asList("+", "-", "x", "÷", "%"));
 
     private boolean esNuevoNumero = true;
     private TextView textResultado;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         textResultado = findViewById(R.id.textResultado);
+
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -107,11 +111,17 @@ public class MainActivity extends AppCompatActivity {
                 findViewById(R.id.buttonSuma)
         );
 
-        for (final Button boton : botonesOperaciones) {
-            boton.setOnClickListener(new View.OnClickListener() {
+        for (Button botonOperacion : botonesOperaciones) {
+            botonOperacion.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mostrarNumero(boton.getText().toString());
+                    String textoBoton = botonOperacion.getText().toString();
+                    String textoActual = textResultado.getText().toString();
+
+                    if (!textoActual.endsWith("+") && !textoActual.endsWith("-") && !textoActual.endsWith("x")
+                            && !textoActual.endsWith("/") && !textoActual.endsWith("÷") && !textoActual.endsWith(",")) {
+                        textResultado.append(textoBoton);
+                    }
                 }
             });
         }
@@ -171,13 +181,30 @@ public class MainActivity extends AppCompatActivity {
 
     private void toggleSign() {
         String texto = textResultado.getText().toString();
-        if (!texto.equals("0")) {
-            if (texto.startsWith("-")) {
-                texto = texto.substring(1);
-            } else {
-                texto = "-" + texto;
-            }
-            textResultado.setText(texto);
+        int i = texto.length() - 1;
+
+        while (i >= 0 && !operadores.contains(String.valueOf(texto.charAt(i)))) {
+            i--;
         }
+
+        String inicio = texto.substring(0, i + 1);
+        String ultimo = texto.substring(i + 1);
+
+        if (ultimo.startsWith("-") || inicio.endsWith("-")) {
+            return;
+        }
+
+        if (ultimo.equals("0")) {
+            return;
+        }
+
+        if (ultimo.startsWith("-")) {
+            ultimo = ultimo.substring(1);
+        } else {
+            ultimo = "(-" + ultimo+")";
+        }
+
+        textResultado.setText(inicio + ultimo);
     }
 }
+
